@@ -1,6 +1,8 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using ResultPattern.Application.Commands;
 using ResultPattern.Domain.DTOs;
+using ResultPattern.Domain.Models;
 
 namespace ResultPattern.EndPoints;
 
@@ -8,8 +10,16 @@ public static class UserEndPoints
 {
     public static void MapUserEndPoints(this WebApplication app)
     {
-        app.MapPost("/users", async (UserCreationDto userCreationDto, IMediator mediator) =>
+        app.MapPost("/users", async (UserCreationDto userCreationDto, IMediator mediator, IValidator<UserCreationDto> validator) =>
         {
+            var validationResult = await validator.ValidateAsync(userCreationDto);
+
+            if (!validationResult.IsValid)
+            {
+                var errors = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
+                return Results.BadRequest(new { Errors = errors });
+            }
+
             var result = await mediator.Send(new AddUserCommand(userCreationDto), default);
 
             if(result.IsSuccess is false)
