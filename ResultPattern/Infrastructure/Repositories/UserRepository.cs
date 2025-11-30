@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ResultPattern.Domain.Errors;
 using ResultPattern.Domain.Interfaces;
 using ResultPattern.Domain.Models;
 using ResultPattern.Domain.Results;
@@ -28,6 +29,10 @@ public class UserRepository : IUserRepository
     public async Task<Result<User?>> GetByIdAsync(int id, CancellationToken cancellationToken = default)
     {
         var user = await _db.Users.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        if (user == null)
+        {
+            return Result<User?>.Fail(UserErrors.NotFound);
+        }
         return Result<User?>.Ok(user);
     }
 

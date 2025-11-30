@@ -19,9 +19,9 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<User>(b =>
         {
             b.HasKey(x => x.Id);
-            b.Property(x => x.Email).IsRequired();
-            b.Property(x => x.FullName).IsRequired();
-            b.Property(x => x.AvatarUrl).IsRequired(false);
+            b.Property(x => x.Email).IsRequired().HasMaxLength(100);
+            b.Property(x => x.FullName).IsRequired().HasMaxLength(100);
+            b.Property(x => x.AvatarUrl).IsRequired(false).HasMaxLength(250);
         });
     }
 }

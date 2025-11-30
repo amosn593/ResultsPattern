@@ -17,18 +17,7 @@ public sealed class User
     // Factory with validation returning Result<User>
     public static Result<User> Create(string email, string fullName)
     {
-        if (string.IsNullOrWhiteSpace(email))
-            return Result<User>.Fail("Email is required.");
-
-
-        if (!email.Contains("@"))
-            return Result<User>.Fail("Email is invalid.");
-
-
-        if (string.IsNullOrWhiteSpace(fullName))
-            return Result<User>.Fail("FullName is required.");
-
-
+        
         var user = new User
         {
             Email = email.Trim().ToLowerInvariant(),
@@ -42,10 +31,7 @@ public sealed class User
 
     public Result UpdateProfile(string fullName)
     {
-        if (string.IsNullOrWhiteSpace(fullName))
-            return Result.Fail("FullName is required.");
-
-
+        
         FullName = fullName.Trim();
         return Result.Ok();
     }

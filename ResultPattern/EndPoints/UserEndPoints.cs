@@ -14,7 +14,7 @@ public static class UserEndPoints
 
             if(result.IsSuccess is false)
             {
-                return Results.Problem(detail: result.Error);
+                return Results.Problem(detail: result.Error!.Message);
             }
 
             return Results.Ok(result.Data);

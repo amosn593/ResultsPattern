@@ -15,7 +15,7 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Pr
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    options.UseNpgsql("ResultPatternDb");
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
